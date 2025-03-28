@@ -1,3 +1,5 @@
+from py4j.java_gateway import java_import
+
 source_dir = "Files/bronze/"
 archive_dir = "Files/bronze/archive/"
 
