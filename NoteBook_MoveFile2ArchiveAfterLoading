@@ -1,0 +1,20 @@
+source_dir = "Files/bronze/"
+archive_dir = "Files/bronze/archive/"
+
+# Get Hadoop FileSystem
+hadoop_conf = spark._jsc.hadoopConfiguration()
+fs = spark._jvm.org.apache.hadoop.fs.FileSystem.get(hadoop_conf)
+
+# Get list of files in source directory
+source_path = spark._jvm.org.apache.hadoop.fs.Path(source_dir)
+file_status = fs.listStatus(source_path)
+
+# Move each file to archive directory
+for file in file_status:
+    file_path = file.getPath()  # Full file path
+    file_name = file_path.getName()  # Extract file name
+    archive_path = spark._jvm.org.apache.hadoop.fs.Path(archive_dir + file_name)  # Destination path
+
+    # Move file
+    fs.rename(file_path, archive_path)
+    print(f"Moved {file_path} to {archive_path}")
